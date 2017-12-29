@@ -17,6 +17,11 @@
 
 httpUtilsJNUElectric::~httpUtilsJNUElectric()
 {
+    delete manager;
+    delete cookies;
+    delete costInfo;
+    delete balanceInfo;
+    delete account;
 }
 
 httpUtilsJNUElectric::httpUtilsJNUElectric()
@@ -58,6 +63,7 @@ QString httpUtilsJNUElectric::GetDormitoryNumber(QString originNumber)
     }
 }
 
+//log into the account
 void httpUtilsJNUElectric::Login()
 {
     QNetworkRequest* request = new QNetworkRequest();
@@ -100,6 +106,7 @@ void httpUtilsJNUElectric::Login()
     });
 }
 
+//get balance information from this system
 void httpUtilsJNUElectric::GetBalance()
 {
     QNetworkRequest* request = new QNetworkRequest();
@@ -136,6 +143,7 @@ void httpUtilsJNUElectric::GetBalance()
     });
 }
 
+//get cost information from the system
 void httpUtilsJNUElectric::GetCost()
 {
     QNetworkRequest* request = new QNetworkRequest();
