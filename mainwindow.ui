@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>JNUEletricFee</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>Sources/icon.ico</normaloff>Sources/icon.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="flushButton">
     <property name="geometry">
@@ -183,14 +187,19 @@
      </rect>
     </property>
    </widget>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>250</y>
+      <width>171</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>   @copyright Wang Yuchen</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>

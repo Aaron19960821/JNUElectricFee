@@ -26,18 +26,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
     httpUtilsJNUElectric.cpp \
     crypt/qaesencryption.cpp \
-    cryptutils.cpp
+    cryptutils.cpp \
+    mainwindow.cpp
 
 HEADERS += \
         mainwindow.h \
-    httpUtilsJNUElectric.h \
     crypt/qaesencryption.h \
-    mainwindow.h \
+    urls.h \
     cryptutils.h \
-    urls.h
+    httpUtilsJNUElectric.h \
+    mainwindow.h \
 
 FORMS += \
         mainwindow.ui
+
+
+DISTFILES += \
+    Sources/sakura.jpg \
+    Sources/icon.png \
+    Sources/icon.ico \
+    Sources/icon.icns
+
+ICON = Sources/icon.icns

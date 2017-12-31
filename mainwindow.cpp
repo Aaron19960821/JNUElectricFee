@@ -42,6 +42,13 @@ MainWindow::MainWindow(QWidget *parent) :
     this->connection = new httpUtilsJNUElectric();
     connect(this->connection, SIGNAL(balanceUpdated()), this, SLOT(balanceUpdate()));
     connect(this->connection, SIGNAL(costUpdated()), this, SLOT(costUpdate()));
+    connect(this, SIGNAL(balanceLow(bool)), this, SLOT(setDisplay(bool)));
+    connect(this, SIGNAL(statusSignal(int)), this, SLOT(setStatusBar(int)));
+    connect(this, SIGNAL(balanceUpdate(double)), this->ui->balanceDisplay, SLOT(display(double)));
+    connect(this, SIGNAL(electricityUpdate(double)), this->ui->electricDisplay, SLOT(display(double)));
+    connect(this, SIGNAL(waterUpdated(double)), this->ui->waterDisplay, SLOT(display(double)));
+    connect(this, SIGNAL(waterFeeUpdate(double)), this->ui->waterPriceDisplay,SLOT(display(double)));
+    connect(this, SIGNAL(electricityFeeUpdate(double)), this->ui->electricFeeDisplay,SLOT(display(double)));
 }
 
 MainWindow::~MainWindow()
@@ -55,8 +62,31 @@ void MainWindow::Update()
    QString dormitoryNumber = this->ui->dormitoryInput->text();
    dormitoryNumber = httpUtilsJNUElectric::GetDormitoryNumber(dormitoryNumber);
 
+   //check if the format is actually right
+   if(dormitoryNumber.compare("Format Error") == 0)
+   {
+       emit statusSignal(0);
+       return;
+   }
+
    this->connection->setAccount(dormitoryNumber);
    this->connection->Login();
+}
+
+void MainWindow::setStatusBar(int statusCode)
+{
+    if(statusCode == 0)
+    {
+        this->ui->statusBar->showMessage("Dormitory Format Error!!", 200000);
+    }
+    else if(statusCode == 2)
+    {
+        this->ui->statusBar->showMessage("Network Error!!", 20000);
+    }
+    else
+    {
+        this->ui->statusBar->showMessage("OK!!", 20000);
+    }
 }
 
 void MainWindow::balanceUpdate()
@@ -71,17 +101,17 @@ void MainWindow::balanceUpdate()
     double waterUnitPrice = energyUnitPrice[1].toObject()["keyValue"].toString().mid(0,1).toDouble();
 
     qDebug() << energyUnitPrice[0].toObject()["keyValue"].toString().mid(0,5);
-    this->ui->balanceDisplay->display(balance);
-    this->ui->electricFeeDisplay->display(electricUnitPrice);
-    this->ui->waterPriceDisplay->display(waterUnitPrice);
+    emit balanceUpdate(balance);
+    emit electricityFeeUpdate(electricUnitPrice);
+    emit waterFeeUpdate(waterUnitPrice);
 
     if(balance < 20.0)
     {
-        setDisplay(false);
+        emit balanceLow(true);
     }
     else
     {
-        setDisplay(true);
+        emit balanceLow(false);
     }
 }
 
@@ -99,15 +129,14 @@ void MainWindow::costUpdate()
     QJsonArray hotWaterDetail = resultList[2].toObject()["energyCostDetails"].toArray();
     double hotWaterUsed = coldWaterDetail[0].toObject()["billItemValues"].toArray()[0].toObject()["energyValue"].toDouble();
 
-    this->ui->waterDisplay->display(hotWaterUsed+coldWaterUsed);
-    this->ui->electricDisplay->display(electricityUsed);
-
+    emit waterUpdated(hotWaterUsed+coldWaterUsed);
+    emit electricityUpdate(electricityUsed);
 }
 
 void MainWindow::setDisplay(bool isOk)
 {
     QPalette displayStyle;
-    if(isOk)
+    if(!isOk)
     {
         displayStyle.setColor(QPalette::WindowText, Qt::green);
         displayStyle.setColor(QPalette::Background, Qt::green);

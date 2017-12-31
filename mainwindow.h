@@ -22,9 +22,22 @@ public slots:
     void balanceUpdate();
     void costUpdate();
 
+private slots:
+    void setDisplay(bool isOk);
+    void setStatusBar(int statusCode);
+
+signals:
+    void balanceLow(bool isLow);
+    void statusSignal(int statusCode);
+    void balanceUpdate(double balance);
+    void electricityUpdate(double electricity);
+    void waterUpdated(double water);
+    void waterFeeUpdate(double waterFee);
+    void electricityFeeUpdate(double electricityFee);
+
+
 private:
     //update the electronic fee
-    void setDisplay(bool isOk);
     Ui::MainWindow *ui;
     QTimer* flushTimer;
     httpUtilsJNUElectric* connection;
