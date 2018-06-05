@@ -33,15 +33,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->waterDisplay->display(0.00);
     ui->waterPriceDisplay->display(0.00);
 
-    this->flushTimer = new QTimer(this);
-    connect(flushTimer, SIGNAL(timeout()), this, SLOT(Update()));
-    this->flushTimer->start(200000);
+    connect(&flushTimer, SIGNAL(timeout()), this, SLOT(Update()));
+    this->flushTimer.start(200000);
 
     connect(ui->flushButton, SIGNAL(released()), this, SLOT(Update()));
 
-    this->connection = new httpUtilsJNUElectric();
-    connect(this->connection, SIGNAL(balanceUpdated()), this, SLOT(balanceUpdate()));
-    connect(this->connection, SIGNAL(costUpdated()), this, SLOT(costUpdate()));
+    connect(&(this->connection), SIGNAL(balanceUpdated()), this, SLOT(balanceUpdate()));
+    connect(&(this->connection), SIGNAL(costUpdated()), this, SLOT(costUpdate()));
     connect(this, SIGNAL(balanceLow(bool)), this, SLOT(setDisplay(bool)));
     connect(this, SIGNAL(statusSignal(int)), this, SLOT(setStatusBar(int)));
     connect(this, SIGNAL(balanceUpdate(double)), this->ui->balanceDisplay, SLOT(display(double)));
@@ -54,7 +52,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete connection;
 }
 
 void MainWindow::Update()
@@ -69,8 +66,8 @@ void MainWindow::Update()
        return;
    }
 
-   this->connection->setAccount(dormitoryNumber);
-   this->connection->Login();
+   this->connection.setAccount(dormitoryNumber);
+   this->connection.Login();
 }
 
 void MainWindow::setStatusBar(int statusCode)
@@ -91,7 +88,7 @@ void MainWindow::setStatusBar(int statusCode)
 
 void MainWindow::balanceUpdate()
 {
-    QJsonObject balanceInfo = *(this->connection->GetBalanceInfo());
+    QJsonObject balanceInfo = *(this->connection.GetBalanceInfo());
     QJsonArray resultList = balanceInfo["d"].toObject()["ResultList"].toArray();
     QJsonArray roomInfo = resultList[0].toObject()["roomInfo"].toArray();
     double balance = roomInfo[1].toObject()["keyValue"].toString().toDouble();
@@ -117,7 +114,7 @@ void MainWindow::balanceUpdate()
 
 void MainWindow::costUpdate()
 {
-    QJsonObject costInfo = *(this->connection->GetCostInfo());
+    QJsonObject costInfo = *(this->connection.GetCostInfo());
     QJsonArray resultList = costInfo["d"].toObject()["ResultList"].toArray();
     QJsonArray electricityDetail = resultList[0].toObject()["energyCostDetails"].toArray();
     double electricityUsed = electricityDetail[0].toObject()["billItemValues"].toArray()[0].toObject()["energyValue"].toDouble();

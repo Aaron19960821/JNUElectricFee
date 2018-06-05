@@ -39,8 +39,8 @@ signals:
 private:
     //update the electronic fee
     Ui::MainWindow *ui;
-    QTimer* flushTimer;
-    httpUtilsJNUElectric* connection;
+    QTimer flushTimer;
+    httpUtilsJNUElectric connection;
 };
 
 #endif // MAINWINDOW_H

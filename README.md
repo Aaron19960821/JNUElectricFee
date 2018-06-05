@@ -12,6 +12,14 @@ This application is now available in MAC OS, here is the address to download:
 
 https://pan.baidu.com/s/1pLcbHd5  
 
+### Running
+
+See the picture below:  
+
+<img src="./readmeimages/running.png"></img>
+
+If your balance is below **20.0**, the boxes will turn red!!!
+
 ### Future Plan
 
 Now the application collect no information when it is running. I plan to store some necessary information to make it more usable. Moreover, this application needs a better UI, any great design, please contact me.  

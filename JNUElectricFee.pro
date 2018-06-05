@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT	 += network
+QT	+= xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -29,7 +30,8 @@ SOURCES += \
     httpUtilsJNUElectric.cpp \
     crypt/qaesencryption.cpp \
     cryptutils.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    setting.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,6 +40,7 @@ HEADERS += \
     cryptutils.h \
     httpUtilsJNUElectric.h \
     mainwindow.h \
+    setting.h
 
 FORMS += \
         mainwindow.ui
