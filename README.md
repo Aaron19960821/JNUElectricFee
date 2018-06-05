@@ -16,7 +16,7 @@ https://pan.baidu.com/s/1pLcbHd5
 
 See the picture below:  
 
-<img src="./readmeimages/running.png"></img>
+<img src="./readmeImages/running.png"></img>
 
 If your balance is below **20.0**, the boxes will turn red!!!
 
